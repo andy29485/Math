@@ -96,6 +96,31 @@ public class Matrix {
     return A;
   }
 
+  public Matrix reducedRowEchelonForm() {
+    if(this.rows != this.cols+1)
+      throw new RuntimeException("Illegal matrix dimensions");
+    Matrix A = new Matrix(this);
+    for(int i=0; i<this.rows; i++) {
+      for(int j=0; j<this.cols; j++) {
+        A.set(i, j, A.get(i, j)/A.get(i, i));
+      }
+      for(int j=0; j<i; j++) {
+        for(int k=0; k<this.cols; k++) {
+          A.set(i, k, A.get(i, k) - (A.get(j, k) * A.get(i, j)));
+        }
+      }
+    }
+    for(int i=this.rows-1; i>=0; i--) {
+      for(int j=this.cols-2; j>i; j--) {
+        for(int k=i+1; k<this.cols; k++) {
+          A.set(i, k, A.get(i, k) - (A.get(i+1, k) * A.get(i, j)));
+        }
+      }
+    }
+
+    return A;
+  }
+
   //OUTPUT
   // print the matrix
   public void print() {
